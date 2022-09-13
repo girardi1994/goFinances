@@ -20,6 +20,8 @@ padding: 0 24px;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
+margin-top: -120px;
+
 `;
 export const UserInfo = styled.View`
 flex-direction: row;
@@ -49,6 +51,10 @@ font-size: ${RFValue(24)}px;
 `;
 export const HighLightCards = styled.ScrollView.attrs({
   horizontal: true,
-  showsHorizontalScrollIndicator: true,
-  contentContainerStyle:{paddingLeft: 24}
-})``;
+  showsHorizontalScrollIndicator: false,
+  contentContainerStyle:{paddingLeft: 24},
+})`
+width: 100%;
+position: absolute;
+margin-top: ${RFPercentage(20)}px;
+`;
