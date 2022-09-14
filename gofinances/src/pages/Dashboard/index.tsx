@@ -1,5 +1,6 @@
 import React from "react";
 import { HighLightCard } from "../../components/HighLightCard";
+import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
 
 import {
   Container,
@@ -12,9 +13,54 @@ import {
   UserName,
   Icon,
   HighLightCards,
+  Transactions,
+  Title,
+  TransactionList,
 } from "./styles";
+ 
+export interface DataListProps extends TransactionCardProps{
+  id: string,
+}
 
 export function Dashboard() {
+  const data : DataListProps[]=[
+    {
+      id: '1',
+      type: 'positive',
+    title:"Desenvolvimento de site",
+    amount:"R$ 12.000,00", 
+    category: {
+      name: 'Vendas',
+      icon: 'dollar-sign'
+      
+    },
+    date:'13/04/2020',
+  },
+  {
+    id: '2',
+    type: 'negative',
+    title:"Hamburguer pizza",
+    amount:"R$ 50,00", 
+    category: {
+      name: 'Alimentação',
+      icon: 'coffee'
+      
+    },
+    date:'13/04/2020',
+  },
+  {
+    id: '3',
+    type: 'negative',
+    title:"Aluguel do apartamento",
+    amount:"R$ 1.200,00", 
+    category: {
+      name: 'Casa',
+      icon: 'shopping-bag'
+      
+    },
+    date:'13/04/2020',
+  }
+];
   return (
     <Container>
       <Header>
@@ -22,7 +68,7 @@ export function Dashboard() {
           <UserInfo>
             <Photo
               source={{
-                uri: "https://avatars.githubusercontent.com/u/30416996?v=4",
+                uri: "https://avatars.githubusercontent.com/u/30416996?v=4"
               }}
             />
             <User>
@@ -38,6 +84,16 @@ export function Dashboard() {
         <HighLightCard type='down' title='Saídas' amount='R$ 1.250,00' lastTransation='Última saída dia 14 de abril'/>
         <HighLightCard type='total' title='Total' amount='R$ 16.150,00' lastTransation='01 à 16 de abril'/>
       </HighLightCards>
+      <Transactions>
+        <Title>Listagem</Title>
+        <TransactionList 
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => <TransactionCard data= {item}/> }
+       
+        />
+        
+      </Transactions>
     </Container>
-  );
+  )
 }
