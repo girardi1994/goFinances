@@ -15,15 +15,14 @@ import {
  
  } from "./style";
 
-interface Category {
+interface ICategory {
   key: string;
   name: string;
-  
 }
 
 interface Props {
-  category: string;
-  setCategory: (Category: Category) => void;
+  category: ICategory;
+  setCategory: (Category: ICategory) => void;
   closeSelectCategory: () => void;
 }
 
@@ -32,6 +31,10 @@ export function CategorySelect({
   setCategory,
   closeSelectCategory,
 }: Props ){
+
+  function handleCategorySelect(category: Category){
+    setCategory(category)
+  }
   return (
     <Container>
       <Header>
@@ -42,7 +45,10 @@ export function CategorySelect({
       style={{flex:1, width: '100%' }}
       keyExtractor={(item)=>item.key}
       renderItem={({item}) => (
-        <Category>
+        <Category
+        onPress={() => handleCategorySelect(item)}
+        isActive={category.key === item.key}
+        >
           <Icon name={item.icon}/>
           <Name >{item.name}</Name>
         </Category>
@@ -50,7 +56,7 @@ export function CategorySelect({
       ItemSeparatorComponent={() => <Separator/>}
       />
       <Footer>
-        <Button title="Selecionar"/>
+        <Button title="Selecionar" onPress={closeSelectCategory}/>
       </Footer>
     </Container>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import AppLoading from "expo-app-loading";
-import { CategorySelect } from './src/pages/CategorySelect'
+import { Register } from './src/Register';
 import { ThemeProvider } from "styled-components";
 import theme from './src/global/styles/theme';
 import {useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold} from '@expo-google-fonts/poppins'
@@ -16,7 +16,7 @@ return <AppLoading/>
   }
   return (
     <ThemeProvider theme={theme}>
-      <CategorySelect />
+      <Register />
     </ThemeProvider>
   );
 }
