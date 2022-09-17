@@ -32,7 +32,7 @@ export function CategorySelect({
   closeSelectCategory,
 }: Props ){
 
-  function handleCategorySelect(category: Category){
+  function handleCategorySelect(category: ICategory){
     setCategory(category)
   }
   return (
