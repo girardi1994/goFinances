@@ -48,6 +48,7 @@ export function Register() {
   });
 
   function handleTransictionTypeSelect(type: "up" | "down") {
+    console.log(type)
     setTransactionType(type);
   }
 
@@ -71,6 +72,8 @@ export function Register() {
       category: category.key,
     };
   }
+
+
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
