@@ -71,7 +71,6 @@ export function Dashboard() {
 
     const transactionsFormatted: DataListProps[] = transactions.map(
       (item: DataListProps) => {
-        console.log(item);
         if (item.type === "positive") {
           entriesTotal += Number(item.amount);
         } else {
@@ -109,29 +108,6 @@ export function Dashboard() {
     const totalInterval = `01 a ${lastTransactionsExpensives}`;
 
     const finalTotal = entriesTotal - expensiveTotal;
-    console.log({
-      entries: {
-        total: entriesTotal.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }),
-        lastTransactions: lastTransactionsEntries,
-      },
-      expensives: {
-        total: expensiveTotal.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }),
-        lastTransactions: lastTransactionsExpensives,
-      },
-      finalTotal: {
-        total: finalTotal.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }),
-        lastTransactions: "",
-      },
-    });
     setHighLightData({
       entries: {
         total: entriesTotal.toLocaleString("pt-BR", {

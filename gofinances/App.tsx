@@ -1,11 +1,14 @@
 import React from "react";
-import 'intl';
-import 'intl/locale-data/jsonp/pt-BR';
+import "intl";
+import "intl/locale-data/jsonp/pt-BR";
 import AppLoading from "expo-app-loading";
 import { ThemeProvider } from "styled-components";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AuthProvider } from "./src/Hooks/Auth";
+import { SignIn } from "./src/pages/SignIn";
 import theme from "./src/global/styles/theme";
 import {
   useFonts,
@@ -27,7 +30,10 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
         <NavigationContainer>
-          <AppRoutes />
+          <StatusBar barStyle={"light-content"} />
+          <AuthProvider>
+            <SignIn />
+          </AuthProvider>
         </NavigationContainer>
       </ThemeProvider>
     </GestureHandlerRootView>

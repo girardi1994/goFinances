@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback} from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { addMonths, subMonths, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HistoryCard } from "../../components/HistoryCar";
 import {
@@ -35,11 +38,20 @@ interface CategoryData {
 }
 
 export function Resume() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
 
   const theme = useTheme();
+
+  function handleDateChange(action: "next" | "prev") {
+    if (action === "next") {
+      setSelectedDate(addMonths(selectedDate, 1));
+    } else {
+      const newDate = setSelectedDate(subMonths(selectedDate, 1));
+    }
+  }
 
   async function loadData() {
     const datakey = "@gofinance:transactions";
@@ -47,7 +59,10 @@ export function Resume() {
     const responseFormatted = response ? JSON.parse(response) : [];
 
     const expensives = responseFormatted.filter(
-      (expensive: TransactionData) => expensive.type === "negative"
+      (expensive: TransactionData) =>
+        expensive.type === "negative" &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     );
 
     const expensivesTotal = expensives.reduce(
@@ -62,12 +77,12 @@ export function Resume() {
     categories.forEach((category) => {
       let categorySum = 0;
 
-      expensives.forEach((expensive: TransactionData) => {
-        if (expensives.category === category.key) {
-          categorySum += Number(expensive.amount);
+      expensives.forEach((joao: TransactionData) => {
+        if (joao.category === category.key) {
+          categorySum += Number(joao.amount);
         }
       });
-
+      console.log("categorySum", categorySum);
       if (categorySum > 0) {
         const totalFormatted = categorySum.toLocaleString("pt-BR", {
           style: "currency",
@@ -86,18 +101,26 @@ export function Resume() {
         });
       }
     });
+
     setTotalByCategories(totalByCategory);
   }
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectedDate]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   return (
     <Container>
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
+
       <Content
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -106,18 +129,19 @@ export function Resume() {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
-            <MonthSelectIcon name="chevron-left"/>
+          <MonthSelectButton onPress={() => handleDateChange("prev")}>
+            <MonthSelectIcon name="chevron-left" />
           </MonthSelectButton>
 
-          <Month></Month>
+          <Month>{format(selectedDate, "MMMM, yyyy", { locale: ptBR })}</Month>
 
-          <MonthSelectButton>
-            <MonthSelectIcon name="chevron-"/>
+          <MonthSelectButton onPress={() => handleDateChange("next")}>
+            <MonthSelectIcon name="chevron-right" />
           </MonthSelectButton>
         </MonthSelect>
         <ChartContainer>
           <VictoryPie
+
             data={totalByCategories}
             colorScale={totalByCategories.map((category) => category.color)}
             style={{
@@ -128,12 +152,14 @@ export function Resume() {
               },
             }}
             labelRadius={60}
+            
             x="percent"
             y="total"
           />
         </ChartContainer>
-        {totalByCategories.map((item) => (
+        {totalByCategories.map((item, index) => (
           <HistoryCard
+            key={index}
             title={item.name}
             amount={item.totalFormatted}
             color={item.color}
