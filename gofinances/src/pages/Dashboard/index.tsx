@@ -6,6 +6,7 @@ import {
 } from "../../components/TransactionCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../Hooks/Auth";
 
 import {
   Container,
@@ -59,7 +60,9 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highLightData, setHighLightData] = useState<HighLightData>(
     {} as HighLightData
+
   );
+  const {signOut, user} = useAuth();
 
   async function loadTransactions() {
     const datakey = "@gofinance:transactions";
@@ -149,16 +152,14 @@ export function Dashboard() {
         <UserWrapper>
           <UserInfo>
             <Photo
-              source={{
-                uri: "https://avatars.githubusercontent.com/u/30416996?v=4",
-              }}
+              source={{uri: user.photo}}
             />
             <User>
               <UserGreeting>Olá,</UserGreeting>
-              <UserName>Ricardo Girardi</UserName>
+              <UserName>|{user.name}</UserName>
             </User>
           </UserInfo>
-          <LogoutButton onPress={() => {}}>
+          <LogoutButton onPress={signOut}>
             <Icon name="power" />
           </LogoutButton>
         </UserWrapper>

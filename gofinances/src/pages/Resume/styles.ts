@@ -22,6 +22,8 @@ export const Title = styled.Text`
 `;
 export const ChartContainer = styled.View`
   width: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 export const Content = styled.ScrollView``;
 

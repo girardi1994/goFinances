@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { addMonths, subMonths, format } from "date-fns";
@@ -141,7 +141,6 @@ export function Resume() {
         </MonthSelect>
         <ChartContainer>
           <VictoryPie
-
             data={totalByCategories}
             colorScale={totalByCategories.map((category) => category.color)}
             style={{
@@ -152,7 +151,6 @@ export function Resume() {
               },
             }}
             labelRadius={60}
-            
             x="percent"
             y="total"
           />
