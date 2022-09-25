@@ -4,7 +4,7 @@ import "intl/locale-data/jsonp/pt-BR";
 import AppLoading from "expo-app-loading";
 import { ThemeProvider } from "styled-components";
 import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { Routes } from "./src/routes";
 import { AppRoutes } from "./src/routes/app.routes";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider } from "./src/Hooks/Auth";
@@ -29,12 +29,10 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
           <StatusBar barStyle={"light-content"} />
           <AuthProvider>
-            <SignIn />
+            <Routes />
           </AuthProvider>
-        </NavigationContainer>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
