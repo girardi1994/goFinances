@@ -41,12 +41,17 @@ function getLastTransactionDate(
   collection: DataListProps[],
   type: "positive" | "negative"
 ) {
+  const collectionFilttered = collecion.filter(
+    (transaction) => transaction.type === type
+  );
+  if(collectionFilttered.length === 0)
+  return "0"
+
   const lastTransactions = new Date(
     Math.max.apply(
       Math,
-      collection
-        .filter((transaction) => transaction.type === type)
-        .map((transaction) => new Date(transaction.date).getTime())
+      collectionFilttered
+      .map((transaction) => new Date(transaction.date).getTime())
     )
   );
 
@@ -60,12 +65,11 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highLightData, setHighLightData] = useState<HighLightData>(
     {} as HighLightData
-
   );
-  const {signOut, user} = useAuth();
+  const { signOut, user } = useAuth();
 
   async function loadTransactions() {
-    const datakey = "@gofinance:transactions";
+    const datakey = `@gofinance:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(datakey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -117,14 +121,16 @@ export function Dashboard() {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransactions: `Última entrada dia ${lastTransactionsEntries}`,
+        lastTransactions: lastTransactionsEntries === 0 ? 'Não há transações' :
+         `Última entrada dia ${lastTransactionsEntries}`,
       },
       expensives: {
         total: expensiveTotal.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransactions: `Última saída dia ${lastTransactionsExpensives}`,
+        lastTransactions: lastTransactionsExpensives === 0 ? 'Não há transações' :
+         `Última saída dia ${lastTransactionsExpensives}`,
       },
       finalTotal: {
         total: finalTotal.toLocaleString("pt-BR", {
@@ -151,9 +157,7 @@ export function Dashboard() {
       <Header>
         <UserWrapper>
           <UserInfo>
-            <Photo
-              source={{uri: user.photo}}
-            />
+            <Photo source={{ uri: user.photo }} />
             <User>
               <UserGreeting>Olá,</UserGreeting>
               <UserName>|{user.name}</UserName>
