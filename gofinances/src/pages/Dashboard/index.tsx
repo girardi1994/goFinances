@@ -35,13 +35,13 @@ interface HighLightDataProps {
 interface HighLightData {
   entries: HighLightDataProps;
   expensives: HighLightDataProps;
-  finalTotal: HighLightDataProps;
+  finalTotal: HighLightDataProps; 
 }
 function getLastTransactionDate(
   collection: DataListProps[],
   type: "positive" | "negative"
 ) {
-  const collectionFilttered = collecion.filter(
+  const collectionFilttered = collection.filter(
     (transaction) => transaction.type === type
   );
   if(collectionFilttered.length === 0)
@@ -121,7 +121,7 @@ export function Dashboard() {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransactions: lastTransactionsEntries === 0 ? 'Não há transações' :
+        lastTransactions: lastTransactionsEntries === "0" ? 'Não há transações' :
          `Última entrada dia ${lastTransactionsEntries}`,
       },
       expensives: {
@@ -129,7 +129,7 @@ export function Dashboard() {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransactions: lastTransactionsExpensives === 0 ? 'Não há transações' :
+        lastTransactions: lastTransactionsExpensives === "0" ? 'Não há transações' :
          `Última saída dia ${lastTransactionsExpensives}`,
       },
       finalTotal: {
